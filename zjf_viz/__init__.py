@@ -1,6 +1,5 @@
 from .theme import set_theme, palette
 from .plots import scatter, line, bar, box, heatmap, hist
-from .timeseries import stacked_signals
 
 __all__ = [
     "set_theme",
@@ -10,6 +9,5 @@ __all__ = [
     "bar",
     "box",
     "heatmap",
-    "hist",
-    "stacked_signals"
+    "hist"
 ]
