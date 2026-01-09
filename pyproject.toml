@@ -20,7 +20,11 @@ dependencies = [
     "matplotlib",
     "seaborn",
     "pandas",
-    "numpy"
+    "numpy",
+    "mne",
+    "nilearn",
+    "nibabel",
+    "scikit-learn"
 ]
 
 [project.urls]
