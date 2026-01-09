@@ -73,5 +73,23 @@ class TestTimeseries(unittest.TestCase):
         yticks = [item.get_text() for item in ax.get_yticklabels()]
         self.assertEqual(yticks, labels)
 
+    def test_time_frequency(self):
+        # Generate a chirp signal
+        fs = 1000
+        t = np.linspace(0, 1, fs)
+        # Chirp from 10Hz to 100Hz
+        signal = np.sin(2 * np.pi * 10 * t + 2 * np.pi * 90 * t**2 / 2)
+
+        ax = zviz.time_frequency(signal, fs, title="Test Spectrogram")
+        self.assertIsNotNone(ax)
+
+    def test_psd(self):
+        fs = 1000
+        t = np.linspace(0, 1, fs)
+        signal = np.sin(2 * np.pi * 10 * t) + 0.5 * np.sin(2 * np.pi * 50 * t)
+
+        ax = zviz.psd(signal, fs, title="Test PSD")
+        self.assertIsNotNone(ax)
+
 if __name__ == '__main__':
     unittest.main()
