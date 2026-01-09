@@ -139,3 +139,71 @@ def psd(data, sampling_rate, method='welch', title=None, xlabel="Frequency (Hz)"
         raise NotImplementedError(f"Method {method} not implemented yet.")
 
     return finalize_plot(ax, title, xlabel, ylabel, save_path)
+
+def butterfly(data, sampling_rate=None, start_time=0, title=None, xlabel="Time (s)", ylabel="Amplitude", color='black', alpha=0.5, save_path=None, **kwargs):
+    """
+    Plots all signals overlaid (butterfly plot).
+
+    Args:
+        data: (n_samples, n_channels) numpy array or DataFrame.
+        sampling_rate: Sampling frequency.
+        start_time: Start time.
+        title: Plot title.
+        xlabel: Label for x-axis.
+        ylabel: Label for y-axis.
+        color: Color of the lines.
+        alpha: Transparency of the lines.
+        save_path: Path to save.
+    """
+    plt.figure()
+    ax = plt.gca()
+
+    if isinstance(data, pd.DataFrame):
+        signals = data.values
+        if sampling_rate:
+            time = np.arange(signals.shape[0]) / sampling_rate + start_time
+        else:
+             # Try to use index as time if it's numeric
+            try:
+                time = data.index.to_numpy(dtype=float)
+            except:
+                time = np.arange(signals.shape[0])
+    else:
+        signals = data
+        if sampling_rate:
+            time = np.arange(signals.shape[0]) / sampling_rate + start_time
+        else:
+            time = np.arange(signals.shape[0])
+
+    ax.plot(time, signals, color=color, alpha=alpha, **kwargs)
+
+    return finalize_plot(ax, title, xlabel, ylabel, save_path)
+
+def erp_image(data, sampling_rate=None, start_time=0, title=None, xlabel="Time (s)", ylabel="Epochs", cmap="RdBu_r", save_path=None, **kwargs):
+    """
+    Plots an ERP image (heatmap of epochs x time) for a single channel.
+
+    Args:
+        data: (n_epochs, n_times) numpy array.
+        sampling_rate: Sampling frequency.
+        start_time: Start time.
+        title: Title.
+        xlabel: X label.
+        ylabel: Y label.
+        cmap: Colormap.
+        save_path: Path to save.
+    """
+    plt.figure()
+    ax = plt.gca()
+
+    n_epochs, n_times = data.shape
+
+    if sampling_rate:
+        extent = [start_time, start_time + n_times / sampling_rate, 0, n_epochs]
+    else:
+        extent = [0, n_times, 0, n_epochs]
+
+    im = ax.imshow(data, aspect='auto', origin='lower', cmap=cmap, extent=extent, **kwargs)
+    plt.colorbar(im, ax=ax)
+
+    return finalize_plot(ax, title, xlabel, ylabel, save_path)

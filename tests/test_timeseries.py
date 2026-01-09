@@ -91,5 +91,15 @@ class TestTimeseries(unittest.TestCase):
         ax = zviz.psd(signal, fs, title="Test PSD")
         self.assertIsNotNone(ax)
 
+    def test_butterfly(self):
+        ax = zviz.butterfly(self.data_array, title="Butterfly Plot")
+        self.assertIsNotNone(ax)
+
+    def test_erp_image(self):
+        # Epochs x Time
+        data = np.random.randn(20, 100)
+        ax = zviz.erp_image(data, sampling_rate=100, title="ERP Image")
+        self.assertIsNotNone(ax)
+
 if __name__ == '__main__':
     unittest.main()

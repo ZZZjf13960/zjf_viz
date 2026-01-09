@@ -54,5 +54,19 @@ class TestEEG(unittest.TestCase):
         ax = zviz.topoplot(data, montage=montage, names=['A', 'B', 'C', 'D'], title="Custom Montage")
         self.assertIsNotNone(ax)
 
+    def test_plot_montage(self):
+        ax = zviz.plot_montage(title="Standard Montage")
+        self.assertIsNotNone(ax)
+
+    def test_plot_connectivity(self):
+        # Need more non-collinear points for interpolation in topoplot
+        names = ['Fz', 'Cz', 'Pz', 'T7', 'T8']
+        con = np.zeros((5, 5))
+        con[0, 1] = 1 # Fz-Cz
+        con[3, 4] = 0.5 # T7-T8
+
+        ax = zviz.plot_connectivity(con, names, title="Connectivity")
+        self.assertIsNotNone(ax)
+
 if __name__ == '__main__':
     unittest.main()

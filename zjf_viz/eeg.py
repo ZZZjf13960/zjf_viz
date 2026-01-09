@@ -125,3 +125,55 @@ def topoplot(data, montage=None, sensors=True, names=None, title=None, save_path
     plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
 
     return finalize_plot(ax, title, None, None, save_path)
+
+def plot_montage(montage=None, title="Sensor Layout", save_path=None):
+    """
+    Plots the sensor positions on a head.
+
+    Args:
+        montage: Dictionary or list of coordinates. If None, uses STANDARD_1020.
+    """
+    if montage is None:
+        montage = STANDARD_1020
+
+    return topoplot({k: 0 for k in montage}, montage=montage, sensors=True, title=title, save_path=save_path, alpha=0) # alpha=0 to hide heatmap
+
+def plot_connectivity(con, names, montage=None, threshold=None, title=None, save_path=None):
+    """
+    Plots connectivity between sensors on a head.
+
+    Args:
+        con: (n_channels, n_channels) adjacency matrix.
+        names: List of channel names.
+        montage: Coordinate dictionary.
+        threshold: Threshold to show connection.
+    """
+    # Reuse topoplot to draw head and sensors
+    ax = topoplot({n: 0 for n in names}, montage=montage, sensors=True, names=names, title=title, alpha=0)
+
+    # Get coordinates
+    coords = []
+    for name in names:
+        if montage and name in montage:
+            coords.append(montage[name])
+        elif name in STANDARD_1020:
+            coords.append(STANDARD_1020[name])
+        else:
+             # Fallback or error?
+             coords.append((0,0))
+    coords = np.array(coords)
+
+    # Draw lines
+    n_channels = len(names)
+    for i in range(n_channels):
+        for j in range(i+1, n_channels):
+            val = con[i, j]
+            if threshold is None or abs(val) >= threshold:
+                p1 = coords[i]
+                p2 = coords[j]
+                # Scale width or alpha by value?
+                lw = 1 + abs(val) * 2
+                alpha = min(1, abs(val))
+                ax.plot([p1[0], p2[0]], [p1[1], p2[1]], color='blue', linewidth=lw, alpha=alpha)
+
+    return finalize_plot(ax, title, None, None, save_path)
