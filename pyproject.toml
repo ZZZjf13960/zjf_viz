@@ -24,7 +24,8 @@ dependencies = [
     "mne",
     "nilearn",
     "nibabel",
-    "scikit-learn"
+    "scikit-learn",
+    "scipy"
 ]
 
 [project.urls]
