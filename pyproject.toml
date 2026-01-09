@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zjf_viz"
+version = "0.1.0"
+description = "A Python library for beautiful and convenient data visualization."
+authors = [
+  { name = "Jules", email = "jules@example.com" },
+]
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "matplotlib",
+    "seaborn",
+    "pandas",
+    "numpy"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/example/zjf_viz"
