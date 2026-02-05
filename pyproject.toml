@@ -7,7 +7,7 @@ name = "zjf_viz"
 version = "0.1.0"
 description = "A Python library for beautiful and convenient data visualization."
 authors = [
-  { name = "Jules", email = "jules@example.com" },
+  { name = "ZJF", email = "zjf@example.com" },
 ]
 readme = "README.md"
 requires-python = ">=3.7"
